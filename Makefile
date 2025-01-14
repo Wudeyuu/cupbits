@@ -1,11 +1,15 @@
 CC := gcc
 AS := as
 LINKER := ld
+COPIER := objcopy
 
-KERNEL_OBJS = build/kernel/startup.o
+KERNEL_OBJS := build/kernel/startup.o
 
-all: build/Kernel.elf
+all: build/Kernel.img
 
+build/Kernel.img: build/Kernel.elf
+	@$(COPIER) -O binary build/Kernel.elf build/Kernel.img
+	
 build/Kernel.elf: $(KERNEL_OBJS)
 	@$(LINKER) -T kernel/linker.ld -o build/Kernel.elf $(KERNEL_OBJS)
 
